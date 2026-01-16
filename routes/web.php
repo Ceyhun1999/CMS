@@ -14,7 +14,7 @@ Route::prefix('admin')->middleware('guest')->group(function () {
 Route::prefix('admin')->middleware('auth')->group(function () {
 
     Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings');
-    Route::put('/settings', [SettingsController::class, 'update'])->name('admin.settings.update');
+    Route::put('/settings', [SettingsController::class, 'update'])->middleware('throttle:2,1')->name('admin.settings.update');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

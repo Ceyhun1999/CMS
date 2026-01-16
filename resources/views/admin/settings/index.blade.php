@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-
+@section('title', 'Настройка системы')
 @section('content')
     <div class="settings-container">
         <div class="settings-header">
@@ -131,7 +131,6 @@
                 {{-- ACTIONS --}}
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-                    <button type="reset" class="btn btn-secondary">Сбросить</button>
                 </div>
             </form>
         </div>

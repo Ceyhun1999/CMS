@@ -23,7 +23,7 @@
                 {{-- WEBSITE NAME --}}
                 <div class="form-group">
                     <label for="website_name">
-                        Название сайта:
+                        Название сайта: <span class="text-danger">*</span>
                         <span id="website_name_counter" class="char-counter">(0/255)</span>
                     </label>
 
@@ -40,7 +40,7 @@
                 {{-- WEBSITE URL --}}
                 <div class="form-group">
                     <label for="website_url">
-                        Домашняя страница сайта:
+                        Домашняя страница сайта: <span class="text-danger">*</span>
                         <span id="website_url_counter" class="char-counter">(0/255)</span>
                     </label>
 

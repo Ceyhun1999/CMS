@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>429 | Слишком много запросов</title>
-    <link rel="stylesheet" href="{{ asset('assets/css/429.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/429.css') }}">
 </head>
 <body>
     <div class="glow-orb glow-orb-1"></div>

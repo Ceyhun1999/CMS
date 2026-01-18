@@ -34,14 +34,14 @@
                             <i class='bx bx-chevron-down submenu-arrow'></i>
                         </a>
                         <ul class="submenu">
-                            <li class="nav-item active">
-                                <a href="" class="nav-link">
+                            <li class="nav-item {{ request()->is('admin/settings') ? 'active' : '' }}">
+                                <a href="{{ route('admin.settings') }}" class="nav-link">
                                     <i class='bx bxs-circle'></i>
                                     <span>Настройка системы</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
+                            <li class="nav-item {{ request()->is('admin/category*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.categories') }}" class="nav-link">
                                     <i class='bx bxs-circle'></i>
                                     <span>Категории</span>
                                 </a>
@@ -100,7 +100,7 @@
             parent.classList.toggle('open');
         }
     </script>
-    
+
     @stack('scripts')
 </body>
 

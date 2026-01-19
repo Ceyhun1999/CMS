@@ -116,12 +116,27 @@ return [
     */
 
     'attributes' => [
-        'site_name' => 'Название сайта',
-        'site_short_name' => 'Короткое название сайта',
-        'site_url' => 'Адрес сайта',
-        'site_description' => 'Описание сайта',
-        'site_keywords' => 'Ключевые слова',
-        'site_offline' => 'Режим обслуживания',
+        // Settings
+        'website_name' => 'Название сайта',
+        'website_shortname' => 'Короткое название сайта',
+        'website_url' => 'Адрес сайта',
+        'meta_description' => 'Описание сайта',
+        'meta_keywords' => 'Ключевые слова',
+        'website_offline' => 'Режим обслуживания',
+        
+        // Categories
+        'title' => 'Название категории',
+        'parent_id' => 'Родительская категория',
+        'slug' => 'URL (Slug)',
+        'description' => 'Описание категории',
+        'icons' => 'Иконки категории',
+        'icons.*' => 'Иконка',
+        'news_sort_field' => 'Сортировка новостей',
+        'news_sort_order' => 'Порядок сортировки',
+        'include_subcategories' => 'Включать подкатегории',
+        'news_per_page' => 'Новостей на странице',
+        'is_active' => 'Статус категории',
+        'sort_order' => 'Порядок сортировки',
     ],
 
 ];

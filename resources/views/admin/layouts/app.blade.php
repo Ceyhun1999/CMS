@@ -13,6 +13,13 @@
 </head>
 
 <body>
+    <!-- Global Loading Overlay -->
+    <div id="global-loading" class="loading-overlay d-none">
+        <div class="loading-spinner" id="loading-indicator">
+            <div class="lds-hourglass"></div>
+        </div>
+    </div>
+
     <div class="layout-wrapper">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -41,7 +48,7 @@
                                 </a>
                             </li>
                             <li class="nav-item {{ request()->is('admin/category*') ? 'active' : '' }}">
-                                <a href="{{ route('admin.categories') }}" class="nav-link">
+                                <a href="{{ route('admin.categories.index') }}" class="nav-link">
                                     <i class='bx bxs-circle'></i>
                                     <span>Категории</span>
                                 </a>
@@ -86,18 +93,50 @@
         </div>
     </div>
 
+    @if ($errors->any())
+        <script>
+            window.addEventListener('load', () => {
+                document.getElementById('global-loading')?.classList.add('d-none');
+            });
+        </script>
+    @endif
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Toggle sidebar
-        document.querySelector('.sidebar-toggle').addEventListener('click', function() {
-            document.querySelector('.layout-wrapper').classList.toggle('sidebar-collapsed');
+        (function() {
+            const overlay = document.getElementById('global-loading');
+
+            // 🔒 ВСЕГДА скрываем loader при любом рендере страницы
+            if (overlay) {
+                overlay.classList.add('d-none');
+            }
+
+            // ✅ Показываем loader ТОЛЬКО если страница реально уходит
+            window.addEventListener('beforeunload', function() {
+                if (overlay) {
+                    overlay.classList.remove('d-none');
+                }
+            });
+        })();
+
+        // Sidebar toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.querySelector('.sidebar-toggle');
+            const mainContent = document.querySelector('.main-content');
+
+            toggleBtn?.addEventListener('click', () => {
+                sidebar?.classList.toggle('collapsed');
+                mainContent?.classList.toggle('expanded');
+            });
         });
 
-        // Toggle submenu
+        // Submenu toggle
         function toggleSubmenu(event, element) {
             event.preventDefault();
             const parent = element.closest('.nav-item');
-            parent.classList.toggle('open');
+            parent?.classList.toggle('open');
         }
     </script>
 

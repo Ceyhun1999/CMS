@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -11,12 +12,31 @@ class CategoryController extends Controller
 
     public function index()
     {
-        return view('admin.categories.index');
+        $categories = Category::query()->whereNull('parent_id')->orderBy('created_at')->get();
+        $categories = $categories->map(function () {
+            return $this->sortChildrenRecursive($category);
+        });
+        return view('admin.categories.index', [
+            'categories' => $categories
+        ]);
     }
 
     public function create()
     {
-        return view('admin.categories.create');
+        $categories = Category::all();
+        return view('admin.categories.create', [
+            'categories' => $categories
+        ]);
+    }
+
+    protected function sortChildrenRecursive($category)
+    {
+        $category->children = $category->children()
+            ->orderBy('title')
+            ->get()
+            ->map(fn($child) => $this->sortChildrenRecursive($child));
+
+        return $category;
     }
 
     public function store(Request $request)
@@ -35,7 +55,7 @@ class CategoryController extends Controller
             'icons.*' => ['nullable', 'image', 'mimes:jpeg,jpg,png,svg,webp', 'max:2048'],
 
             // Родительская категория
-            'parent_id' => ['nullable', 'integer', 'exists:categories,id'],
+            'parent_id' => ['nullable', 'numeric', 'exists:categories,id'],
 
             // SEO
             'meta_title' => ['nullable', 'string', 'max:255'],
@@ -46,11 +66,18 @@ class CategoryController extends Controller
             'news_sort_field' => ['required', 'string', 'in:created_at,updated_at,rating,views,title,comments_count'],
             'news_sort_order' => ['required', 'in:asc,desc'],
             'include_subcategories' => ['nullable', 'boolean'],
-            'news_per_page' => ['required', 'integer', 'min:1', 'max:100'],
+            'news_per_page' => ['required', 'numeric', 'min:1', 'max:100'],
 
             // Системные
             'is_active' => ['nullable', 'boolean'],
-            'sort_order' => ['nullable', 'integer', 'min:0'],
+            'sort_order' => ['nullable', 'numeric', 'min:0'],
         ]);
+
+        $validated['include_subcategories'] = $request->boolean('include_subcategories');
+        $validated['is_active'] = $request->boolean('is_active');
+
+        $category = Category::create($validated);
+
+        return redirect()->route('admin.categories.create')->with('success', 'Категория успешно создана');
     }
 }

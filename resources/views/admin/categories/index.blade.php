@@ -11,41 +11,27 @@
         </div>
 
         <div class="categories-list">
-            {{-- Категория без подкатегорий --}}
-            <div class="category-item">
-                <div class="category-row">
-                    <span class="drag-handle"><i class='bx bx-menu'></i></span>
-                    <span class="category-status active"><i class='bx bxs-check-circle'></i></span>
-                    <span class="category-info">
-                        <span class="category-id">ID:1</span>
-                        <a href="#" class="category-name">Bloglar</a>
-                    </span>
-                    <span class="category-posts">Публикаций: 8</span>
-                    <div class="category-actions">
-                        <a href="#" class="btn-action btn-edit" title="Редактировать"><i class='bx bx-edit'></i></a>
-                        <button type="button" class="btn-action btn-delete" title="Удалить"><i
-                                class='bx bx-trash'></i></button>
+            @foreach ($categories as $category)
+                <div class="category-item">
+                    <div class="category-row">
+                        <span class="drag-handle"><i class='bx bx-menu'></i></span>
+                        <span class="category-status active"><i class='bx bxs-check-circle'></i></span>
+                        <span class="category-info">
+                            <span class="category-id">ID:{{ $category->id }}</span>
+                            <a href="#" class="category-name">{{ $category->title }}</a>
+                        </span>
+                        <span class="category-posts">Публикаций: 0</span>
+                        <div class="category-actions">
+                            <a href="#" class="btn-action btn-edit" title="Редактировать"><i
+                                    class='bx bx-edit'></i></a>
+                            <button type="button" class="btn-action btn-delete" title="Удалить"><i
+                                    class='bx bx-trash'></i></button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
 
-            {{-- Категория без подкатегорий --}}
-            <div class="category-item">
-                <div class="category-row">
-                    <span class="drag-handle"><i class='bx bx-menu'></i></span>
-                    <span class="category-status active"><i class='bx bxs-check-circle'></i></span>
-                    <span class="category-info">
-                        <span class="category-id">ID:15</span>
-                        <a href="#" class="category-name">Online satış</a>
-                    </span>
-                    <span class="category-posts">Публикаций: 0</span>
-                    <div class="category-actions">
-                        <a href="#" class="btn-action btn-edit" title="Редактировать"><i class='bx bx-edit'></i></a>
-                        <button type="button" class="btn-action btn-delete" title="Удалить"><i
-                                class='bx bx-trash'></i></button>
-                    </div>
-                </div>
-            </div>
+
 
             {{-- Категория С подкатегориями --}}
             <div class="category-item has-children">
@@ -85,124 +71,12 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Категория С подкатегориями --}}
-            <div class="category-item has-children">
-                <div class="category-row">
-                    <span class="drag-handle"><i class='bx bx-menu'></i></span>
-                    <button type="button" class="toggle-children"><i class='bx bx-plus'></i></button>
-                    <span class="category-status active"><i class='bx bxs-check-circle'></i></span>
-                    <span class="category-info">
-                        <span class="category-id">ID:3</span>
-                        <a href="#" class="category-name">Partnyorlar</a>
-                    </span>
-                    <span class="category-posts">Публикаций: 9</span>
-                    <div class="category-actions">
-                        <a href="#" class="btn-action btn-edit" title="Редактировать"><i
-                                class='bx bx-edit'></i></a>
-                        <button type="button" class="btn-action btn-delete" title="Удалить"><i
-                                class='bx bx-trash'></i></button>
-                    </div>
-                </div>
-                <div class="subcategories"></div>
-            </div>
-
-            {{-- Обычные категории --}}
-            <div class="category-item">
-                <div class="category-row">
-                    <span class="drag-handle"><i class='bx bx-menu'></i></span>
-                    <span class="category-status active"><i class='bx bxs-check-circle'></i></span>
-                    <span class="category-info">
-                        <span class="category-id">ID:4</span>
-                        <a href="#" class="category-name">Filiallarımız</a>
-                    </span>
-                    <span class="category-posts">Публикаций: 0</span>
-                    <div class="category-actions">
-                        <a href="#" class="btn-action btn-edit" title="Редактировать"><i
-                                class='bx bx-edit'></i></a>
-                        <button type="button" class="btn-action btn-delete" title="Удалить"><i
-                                class='bx bx-trash'></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-row">
-                    <span class="drag-handle"><i class='bx bx-menu'></i></span>
-                    <span class="category-status active"><i class='bx bxs-check-circle'></i></span>
-                    <span class="category-info">
-                        <span class="category-id">ID:5</span>
-                        <a href="#" class="category-name">Xəbərlər</a>
-                    </span>
-                    <span class="category-posts">Публикаций: 1</span>
-                    <div class="category-actions">
-                        <a href="#" class="btn-action btn-edit" title="Редактировать"><i
-                                class='bx bx-edit'></i></a>
-                        <button type="button" class="btn-action btn-delete" title="Удалить"><i
-                                class='bx bx-trash'></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-row">
-                    <span class="drag-handle"><i class='bx bx-menu'></i></span>
-                    <span class="category-status active"><i class='bx bxs-check-circle'></i></span>
-                    <span class="category-info">
-                        <span class="category-id">ID:6</span>
-                        <a href="#" class="category-name">Endirim kataloqu</a>
-                    </span>
-                    <span class="category-posts">Публикаций: 0</span>
-                    <div class="category-actions">
-                        <a href="#" class="btn-action btn-edit" title="Редактировать"><i
-                                class='bx bx-edit'></i></a>
-                        <button type="button" class="btn-action btn-delete" title="Удалить"><i
-                                class='bx bx-trash'></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-row">
-                    <span class="drag-handle"><i class='bx bx-menu'></i></span>
-                    <span class="category-status active"><i class='bx bxs-check-circle'></i></span>
-                    <span class="category-info">
-                        <span class="category-id">ID:7</span>
-                        <a href="#" class="category-name">German market</a>
-                    </span>
-                    <span class="category-posts">Публикаций: 0</span>
-                    <div class="category-actions">
-                        <a href="#" class="btn-action btn-edit" title="Редактировать"><i
-                                class='bx bx-edit'></i></a>
-                        <button type="button" class="btn-action btn-delete" title="Удалить"><i
-                                class='bx bx-trash'></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-row">
-                    <span class="drag-handle"><i class='bx bx-menu'></i></span>
-                    <span class="category-status active"><i class='bx bxs-check-circle'></i></span>
-                    <span class="category-info">
-                        <span class="category-id">ID:8</span>
-                        <a href="#" class="category-name">Инопресса</a>
-                    </span>
-                    <span class="category-posts">Публикаций: 0</span>
-                    <div class="category-actions">
-                        <a href="#" class="btn-action btn-edit" title="Редактировать"><i
-                                class='bx bx-edit'></i></a>
-                        <button type="button" class="btn-action btn-delete" title="Удалить"><i
-                                class='bx bx-trash'></i></button>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="categories-footer">
             <button type="button" class="btn btn-expand-all">Развернуть все</button>
             <button type="button" class="btn btn-collapse-all">Свернуть все</button>
-            <a href="#" class="btn btn-add-category-green">
+            <a href="{{ route('admin.categories.create') }}" class="btn btn-add-category-green">
                 <i class='bx bx-plus'></i> Добавить новую категорию
             </a>
         </div>

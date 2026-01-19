@@ -2,6 +2,18 @@
 @section('title', 'Добавить категорию')
 
 @section('content')
+    {{-- Breadcrumb --}}
+    <nav aria-label="breadcrumb" style="margin-bottom: 20px;">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.categories.index') }}">
+                    <i class='bx bx-category'></i> Категории
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Добавить категорию</li>
+        </ol>
+    </nav>
+
     <div class="settings-container">
         <div class="settings-header">
             <h4>Добавить категорию</h4>
@@ -9,7 +21,8 @@
         </div>
 
         <div class="settings-card">
-            <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
+            <form id="categoryForm" action="{{ route('admin.categories.store') }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 {{-- SUCCESS --}}
                 @if (session('success'))
@@ -31,9 +44,8 @@
                     @enderror
 
                     <input type="text" id="title" name="title"
-                        class="form-control @error('title') is-invalid @enderror" maxlength="255" required
-                        placeholder="Введите название категории"
-                        value="{{ old('title') }}">
+                        class="form-control @error('title') is-invalid @enderror" maxlength="255"
+                        placeholder="Введите название категории" value="{{ old('title') }}">
                 </div>
 
                 {{-- PARENT CATEGORY --}}
@@ -46,6 +58,10 @@
 
                     <select id="parent_id" name="parent_id" class="form-control @error('parent_id') is-invalid @enderror">
                         <option value="">-- Без родительской категории --</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" {{ old('parent_id') == $category->id ? 'selected' : '' }}>
+                                {{ $category->title }}</option>
+                        @endforeach
                     </select>
 
                     <small class="form-text">
@@ -66,8 +82,7 @@
 
                     <input type="text" id="slug" name="slug"
                         class="form-control @error('slug') is-invalid @enderror" maxlength="255"
-                        placeholder="url-kategorii (генерируется автоматически)"
-                        value="{{ old('slug') }}">
+                        placeholder="url-kategorii (генерируется автоматически)" value="{{ old('slug') }}">
 
                     <small class="form-text">
                         Оставьте пустым для автоматической генерации из названия
@@ -86,8 +101,7 @@
                     @enderror
 
                     <textarea id="description" name="description" rows="4" maxlength="5000"
-                        class="form-control @error('description') is-invalid @enderror"
-                        placeholder="HTML описание категории">{{ old('description') }}</textarea>
+                        class="form-control @error('description') is-invalid @enderror" placeholder="HTML описание категории">{{ old('description') }}</textarea>
                 </div>
 
                 {{-- ICONS --}}
@@ -134,8 +148,7 @@
 
                     <input type="text" id="meta_title" name="meta_title"
                         class="form-control @error('meta_title') is-invalid @enderror" maxlength="255"
-                        placeholder="SEO заголовок страницы"
-                        value="{{ old('meta_title') }}">
+                        placeholder="SEO заголовок страницы" value="{{ old('meta_title') }}">
                 </div>
 
                 {{-- META DESCRIPTION --}}
@@ -167,8 +180,7 @@
 
                     <input type="text" id="meta_keywords" name="meta_keywords" maxlength="500"
                         class="form-control @error('meta_keywords') is-invalid @enderror"
-                        placeholder="ключевое слово 1, ключевое слово 2"
-                        value="{{ old('meta_keywords') }}">
+                        placeholder="ключевое слово 1, ключевое слово 2" value="{{ old('meta_keywords') }}">
                 </div>
 
                 <hr class="form-divider">
@@ -181,13 +193,21 @@
                         <span class="text-danger small">{{ $message }}</span>
                     @enderror
 
-                    <select id="news_sort_field" name="news_sort_field" class="form-control @error('news_sort_field') is-invalid @enderror">
-                        <option value="created_at" {{ old('news_sort_field', 'created_at') == 'created_at' ? 'selected' : '' }}>По дате публикации</option>
-                        <option value="updated_at" {{ old('news_sort_field') == 'updated_at' ? 'selected' : '' }}>По дате редактирования</option>
-                        <option value="rating" {{ old('news_sort_field') == 'rating' ? 'selected' : '' }}>По рейтингу</option>
-                        <option value="views" {{ old('news_sort_field') == 'views' ? 'selected' : '' }}>По просмотрам</option>
-                        <option value="title" {{ old('news_sort_field') == 'title' ? 'selected' : '' }}>По алфавиту</option>
-                        <option value="comments_count" {{ old('news_sort_field') == 'comments_count' ? 'selected' : '' }}>По количеству комментариев</option>
+                    <select id="news_sort_field" name="news_sort_field"
+                        class="form-control @error('news_sort_field') is-invalid @enderror">
+                        <option value="created_at"
+                            {{ old('news_sort_field', 'created_at') == 'created_at' ? 'selected' : '' }}>По дате публикации
+                        </option>
+                        <option value="updated_at" {{ old('news_sort_field') == 'updated_at' ? 'selected' : '' }}>По дате
+                            редактирования</option>
+                        <option value="rating" {{ old('news_sort_field') == 'rating' ? 'selected' : '' }}>По рейтингу
+                        </option>
+                        <option value="views" {{ old('news_sort_field') == 'views' ? 'selected' : '' }}>По просмотрам
+                        </option>
+                        <option value="title" {{ old('news_sort_field') == 'title' ? 'selected' : '' }}>По алфавиту
+                        </option>
+                        <option value="comments_count" {{ old('news_sort_field') == 'comments_count' ? 'selected' : '' }}>
+                            По количеству комментариев</option>
                     </select>
                 </div>
 
@@ -198,9 +218,12 @@
                         <span class="text-danger small">{{ $message }}</span>
                     @enderror
 
-                    <select id="news_sort_order" name="news_sort_order" class="form-control @error('news_sort_order') is-invalid @enderror">
-                        <option value="desc" {{ old('news_sort_order', 'desc') == 'desc' ? 'selected' : '' }}>По убыванию</option>
-                        <option value="asc" {{ old('news_sort_order') == 'asc' ? 'selected' : '' }}>По возрастанию</option>
+                    <select id="news_sort_order" name="news_sort_order"
+                        class="form-control @error('news_sort_order') is-invalid @enderror">
+                        <option value="desc" {{ old('news_sort_order', 'desc') == 'desc' ? 'selected' : '' }}>По
+                            убыванию</option>
+                        <option value="asc" {{ old('news_sort_order') == 'asc' ? 'selected' : '' }}>По возрастанию
+                        </option>
                     </select>
                 </div>
 
@@ -212,9 +235,8 @@
                     @enderror
 
                     <input type="number" id="news_per_page" name="news_per_page"
-                        class="form-control @error('news_per_page') is-invalid @enderror"
-                        placeholder="10" min="1" max="100"
-                        value="{{ old('news_per_page', 10) }}">
+                        class="form-control @error('news_per_page') is-invalid @enderror" placeholder="10" min="1"
+                        max="100" value="{{ old('news_per_page', 10) }}">
                 </div>
 
                 {{-- INCLUDE SUBCATEGORIES --}}
@@ -229,8 +251,8 @@
 
                     <div class="checkbox-wrapper-5">
                         <div class="check">
-                            <input type="checkbox" id="include_subcategories" name="include_subcategories" value="1"
-                                {{ old('include_subcategories', true) ? 'checked' : '' }}>
+                            <input type="checkbox" id="include_subcategories" name="include_subcategories"
+                                value="1" {{ old('include_subcategories', true) ? 'checked' : '' }}>
                             <label for="include_subcategories"></label>
                         </div>
                         <span class="switch-label">
@@ -250,8 +272,7 @@
                     @enderror
 
                     <input type="number" id="sort_order" name="sort_order"
-                        class="form-control @error('sort_order') is-invalid @enderror"
-                        placeholder="0" min="0"
+                        class="form-control @error('sort_order') is-invalid @enderror" placeholder="0" min="0"
                         value="{{ old('sort_order', 0) }}">
 
                     <small class="form-text">
@@ -284,7 +305,7 @@
                 {{-- ACTIONS --}}
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Создать категорию</button>
-                    <a href="{{ route('admin.categories') }}" class="btn btn-secondary">Отмена</a>
+                    <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary">Отмена</a>
                 </div>
             </form>
         </div>
@@ -292,79 +313,146 @@
 @endsection
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        'use strict';
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            'use strict';
 
-        const fields = [
-            {id: 'title', counter: 'title_counter', max: 255},
-            {id: 'slug', counter: 'slug_counter', max: 255},
-            {id: 'description', counter: 'description_counter', max: 5000},
-            {id: 'meta_title', counter: 'meta_title_counter', max: 255},
-            {id: 'meta_description', counter: 'meta_description_counter', max: 500},
-            {id: 'meta_keywords', counter: 'meta_keywords_counter', max: 500}
-        ];
+            const fields = [{
+                    id: 'title',
+                    counter: 'title_counter',
+                    max: 255
+                },
+                {
+                    id: 'slug',
+                    counter: 'slug_counter',
+                    max: 255
+                },
+                {
+                    id: 'description',
+                    counter: 'description_counter',
+                    max: 5000
+                },
+                {
+                    id: 'meta_title',
+                    counter: 'meta_title_counter',
+                    max: 255
+                },
+                {
+                    id: 'meta_description',
+                    counter: 'meta_description_counter',
+                    max: 500
+                },
+                {
+                    id: 'meta_keywords',
+                    counter: 'meta_keywords_counter',
+                    max: 500
+                }
+            ];
 
-        const initCounter = ({id, counter, max}) => {
-            const input = document.getElementById(id);
-            const counterEl = document.getElementById(counter);
+            const initCounter = ({
+                id,
+                counter,
+                max
+            }) => {
+                const input = document.getElementById(id);
+                const counterEl = document.getElementById(counter);
 
-            if (!input || !counterEl) {
-                console.warn(`Counter elements not found: ${id} or ${counter}`);
-                return;
-            }
+                if (!input || !counterEl) {
+                    console.warn(`Counter elements not found: ${id} or ${counter}`);
+                    return;
+                }
 
-            const update = () => {
-                const len = input.value.length;
-                counterEl.textContent = `(${len}/${max})`;
-                counterEl.style.color = len > max * 0.9 ? '#dc3545' : len > max * 0.7 ? '#ffc107' : '#198754';
+                const update = () => {
+                    const len = input.value.length;
+                    counterEl.textContent = `(${len}/${max})`;
+                    counterEl.style.color = len > max * 0.9 ? '#dc3545' : len > max * 0.7 ? '#ffc107' :
+                        '#198754';
+                };
+
+                update();
+                input.addEventListener('input', update);
             };
 
-            update();
-            input.addEventListener('input', update);
-        };
+            fields.forEach(initCounter);
 
-        fields.forEach(initCounter);
+            // Dynamic icon upload fields
+            const iconsContainer = document.getElementById('icons-container');
+            const addIconBtn = document.getElementById('add-icon-btn');
 
-        // Dynamic icon upload fields
-        const iconsContainer = document.getElementById('icons-container');
-        const addIconBtn = document.getElementById('add-icon-btn');
+            const updateRemoveButtons = () => {
+                const rows = iconsContainer.querySelectorAll('.icon-upload-row');
+                rows.forEach((row, index) => {
+                    const removeBtn = row.querySelector('.btn-remove-icon');
+                    removeBtn.style.display = rows.length > 1 ? 'flex' : 'none';
+                });
+            };
 
-        const updateRemoveButtons = () => {
-            const rows = iconsContainer.querySelectorAll('.icon-upload-row');
-            rows.forEach((row, index) => {
-                const removeBtn = row.querySelector('.btn-remove-icon');
-                removeBtn.style.display = rows.length > 1 ? 'flex' : 'none';
-            });
-        };
-
-        const createIconRow = () => {
-            const row = document.createElement('div');
-            row.className = 'icon-upload-row';
-            row.innerHTML = `
+            const createIconRow = () => {
+                const row = document.createElement('div');
+                row.className = 'icon-upload-row';
+                row.innerHTML = `
                 <input type="file" name="icons[]" class="form-control" accept="image/*">
                 <button type="button" class="btn-remove-icon" title="Удалить">
                     <i class='bx bx-x'></i>
                 </button>
             `;
-            return row;
-        };
+                return row;
+            };
 
-        addIconBtn?.addEventListener('click', () => {
-            const newRow = createIconRow();
-            iconsContainer.appendChild(newRow);
-            updateRemoveButtons();
-        });
-
-        iconsContainer?.addEventListener('click', (e) => {
-            const removeBtn = e.target.closest('.btn-remove-icon');
-            if (removeBtn) {
-                removeBtn.closest('.icon-upload-row').remove();
+            addIconBtn?.addEventListener('click', () => {
+                const newRow = createIconRow();
+                iconsContainer.appendChild(newRow);
                 updateRemoveButtons();
-            }
-        });
+            });
 
-        updateRemoveButtons();
-    });
-</script>
+            iconsContainer?.addEventListener('click', (e) => {
+                const removeBtn = e.target.closest('.btn-remove-icon');
+                if (removeBtn) {
+                    removeBtn.closest('.icon-upload-row').remove();
+                    updateRemoveButtons();
+                }
+            });
+
+            updateRemoveButtons();
+
+            // Form validation
+            const form = document.getElementById('categoryForm');
+
+            form?.addEventListener('submit', (e) => {
+                let isValid = true;
+
+                // Проверка обязательного поля title
+                const titleInput = document.getElementById('title');
+                if (titleInput && !titleInput.value.trim()) {
+                    titleInput.classList.add('is-invalid');
+                    titleInput.style.borderColor = '#dc3545';
+                    isValid = false;
+
+                    // Скролл к первому невалидному полю
+                    titleInput.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    titleInput.focus();
+                } else if (titleInput) {
+                    titleInput.classList.remove('is-invalid');
+                    titleInput.style.borderColor = '';
+                }
+
+                // Если форма невалидна, предотвращаем отправку
+                if (!isValid) {
+                    e.preventDefault();
+                }
+            });
+
+            // Убираем красную подсветку при вводе
+            const titleInput = document.getElementById('title');
+            titleInput?.addEventListener('input', () => {
+                if (titleInput.value.trim()) {
+                    titleInput.classList.remove('is-invalid');
+                    titleInput.style.borderColor = '';
+                }
+            });
+        });
+    </script>
 @endpush

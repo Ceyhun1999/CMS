@@ -17,7 +17,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings');
     Route::put('/settings', [SettingsController::class, 'update'])->middleware('throttle:2,1')->name('admin.settings.update');
 
-    Route::get('/category', [CategoryController::class, 'index'])->name('admin.categories');
+    Route::get('/category', [CategoryController::class, 'index'])->name('admin.categories.index');
     Route::get('/category/create', [CategoryController::class, 'create'])->name('admin.categories.create');
     Route::post('/category/store', [CategoryController::class, 'store'])->name('admin.categories.store');
 

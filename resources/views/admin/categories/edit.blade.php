@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title', 'Добавить категорию')
+@section('title', 'Редактировать категорию')
 
 @section('content')
     {{-- Breadcrumb --}}
@@ -10,20 +10,22 @@
                     <i class='bx bx-category'></i> Категории
                 </a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Добавить категорию</li>
+            <li class="breadcrumb-item active" aria-current="page">Редактировать: {{ $category->title }}</li>
         </ol>
     </nav>
 
     <div class="settings-container">
         <div class="settings-header">
-            <h4>Добавить категорию</h4>
-            <p>Создание новой категории для публикаций</p>
+            <h4>Редактировать категорию</h4>
+            <p>Изменение категории "{{ $category->title }}"</p>
         </div>
 
         <div class="settings-card">
-            <form id="categoryForm" action="{{ route('admin.categories.store') }}" method="POST"
+            <form id="categoryForm" action="{{ route('admin.categories.update', $category->id) }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
+
                 {{-- SUCCESS --}}
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -45,7 +47,7 @@
 
                     <input type="text" id="title" name="title"
                         class="form-control @error('title') is-invalid @enderror" maxlength="255"
-                        placeholder="Введите название категории" value="{{ old('title') }}">
+                        placeholder="Введите название категории" value="{{ old('title', $category->title) }}">
                 </div>
 
                 {{-- PARENT CATEGORY --}}
@@ -58,9 +60,12 @@
 
                     <select id="parent_id" name="parent_id" class="form-control @error('parent_id') is-invalid @enderror">
                         <option value="">-- Без родительской категории --</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('parent_id') == $category->id ? 'selected' : '' }}>
-                                {{ $category->title }}</option>
+                        @foreach ($categories as $cat)
+                            @if ($cat->id !== $category->id)
+                                <option value="{{ $cat->id }}"
+                                    {{ old('parent_id', $category->parent_id) == $cat->id ? 'selected' : '' }}>
+                                    {{ $cat->title }}</option>
+                            @endif
                         @endforeach
                     </select>
 
@@ -81,8 +86,8 @@
                     @enderror
 
                     <input type="text" id="slug" name="slug"
-                        class="form-control @error('slug') is-invalid @enderror" maxlength="255"
-                        placeholder="url-kategorii (генерируется автоматически)" value="{{ old('slug') }}">
+                        class="form-control @error('slug') is-invalid @enderror" maxlength="255" placeholder="url-kategorii"
+                        value="{{ old('slug', $category->slug) }}">
 
                     <small class="form-text">
                         Оставьте пустым для автоматической генерации из названия
@@ -101,7 +106,7 @@
                     @enderror
 
                     <textarea id="description" name="description" rows="4" maxlength="5000"
-                        class="form-control @error('description') is-invalid @enderror" placeholder="HTML описание категории">{{ old('description') }}</textarea>
+                        class="form-control @error('description') is-invalid @enderror" placeholder="HTML описание категории">{{ old('description', $category->description) }}</textarea>
                 </div>
 
                 {{-- ICONS --}}
@@ -114,6 +119,26 @@
                     @error('icons.*')
                         <span class="text-danger small">{{ $message }}</span>
                     @enderror
+
+                    {{-- Существующие иконки --}}
+                    @if ($category->icons && count($category->icons) > 0)
+                        <div class="existing-icons" style="margin-bottom: 15px;">
+                            <small class="form-text" style="margin-bottom: 10px; display: block;">Текущие иконки:</small>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                @foreach ($category->icons as $index => $icon)
+                                    <div class="existing-icon-item" style="position: relative;">
+                                        <img src="{{ asset('storage/' . $icon) }}" alt="Icon"
+                                            style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">
+                                        <label
+                                            style="display: flex; align-items: center; gap: 5px; margin-top: 5px; font-size: 12px;">
+                                            <input type="checkbox" name="delete_icons[]" value="{{ $index }}">
+                                            Удалить
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
 
                     <div id="icons-container">
                         <div class="icon-upload-row">
@@ -148,7 +173,7 @@
 
                     <input type="text" id="meta_title" name="meta_title"
                         class="form-control @error('meta_title') is-invalid @enderror" maxlength="255"
-                        placeholder="SEO заголовок страницы" value="{{ old('meta_title') }}">
+                        placeholder="SEO заголовок страницы" value="{{ old('meta_title', $category->meta_title) }}">
                 </div>
 
                 {{-- META DESCRIPTION --}}
@@ -164,7 +189,7 @@
 
                     <textarea id="meta_description" name="meta_description" rows="2" maxlength="500"
                         class="form-control @error('meta_description') is-invalid @enderror"
-                        placeholder="SEO описание для поисковых систем">{{ old('meta_description') }}</textarea>
+                        placeholder="SEO описание для поисковых систем">{{ old('meta_description', $category->meta_description) }}</textarea>
                 </div>
 
                 {{-- META KEYWORDS --}}
@@ -180,7 +205,8 @@
 
                     <input type="text" id="meta_keywords" name="meta_keywords" maxlength="500"
                         class="form-control @error('meta_keywords') is-invalid @enderror"
-                        placeholder="ключевое слово 1, ключевое слово 2" value="{{ old('meta_keywords') }}">
+                        placeholder="ключевое слово 1, ключевое слово 2"
+                        value="{{ old('meta_keywords', $category->meta_keywords) }}">
                 </div>
 
                 <hr class="form-divider">
@@ -196,17 +222,27 @@
                     <select id="news_sort_field" name="news_sort_field"
                         class="form-control @error('news_sort_field') is-invalid @enderror">
                         <option value="created_at"
-                            {{ old('news_sort_field', 'created_at') == 'created_at' ? 'selected' : '' }}>По дате публикации
+                            {{ old('news_sort_field', $category->news_sort_field) == 'created_at' ? 'selected' : '' }}>По
+                            дате публикации
                         </option>
-                        <option value="updated_at" {{ old('news_sort_field') == 'updated_at' ? 'selected' : '' }}>По дате
+                        <option value="updated_at"
+                            {{ old('news_sort_field', $category->news_sort_field) == 'updated_at' ? 'selected' : '' }}>По
+                            дате
                             редактирования</option>
-                        <option value="rating" {{ old('news_sort_field') == 'rating' ? 'selected' : '' }}>По рейтингу
+                        <option value="rating"
+                            {{ old('news_sort_field', $category->news_sort_field) == 'rating' ? 'selected' : '' }}>По
+                            рейтингу
                         </option>
-                        <option value="views" {{ old('news_sort_field') == 'views' ? 'selected' : '' }}>По просмотрам
+                        <option value="views"
+                            {{ old('news_sort_field', $category->news_sort_field) == 'views' ? 'selected' : '' }}>По
+                            просмотрам
                         </option>
-                        <option value="title" {{ old('news_sort_field') == 'title' ? 'selected' : '' }}>По алфавиту
+                        <option value="title"
+                            {{ old('news_sort_field', $category->news_sort_field) == 'title' ? 'selected' : '' }}>По
+                            алфавиту
                         </option>
-                        <option value="comments_count" {{ old('news_sort_field') == 'comments_count' ? 'selected' : '' }}>
+                        <option value="comments_count"
+                            {{ old('news_sort_field', $category->news_sort_field) == 'comments_count' ? 'selected' : '' }}>
                             По количеству комментариев</option>
                     </select>
                 </div>
@@ -220,9 +256,12 @@
 
                     <select id="news_sort_order" name="news_sort_order"
                         class="form-control @error('news_sort_order') is-invalid @enderror">
-                        <option value="desc" {{ old('news_sort_order', 'desc') == 'desc' ? 'selected' : '' }}>По
+                        <option value="desc"
+                            {{ old('news_sort_order', $category->news_sort_order) == 'desc' ? 'selected' : '' }}>По
                             убыванию</option>
-                        <option value="asc" {{ old('news_sort_order') == 'asc' ? 'selected' : '' }}>По возрастанию
+                        <option value="asc"
+                            {{ old('news_sort_order', $category->news_sort_order) == 'asc' ? 'selected' : '' }}>По
+                            возрастанию
                         </option>
                     </select>
                 </div>
@@ -236,7 +275,7 @@
 
                     <input type="number" id="news_per_page" name="news_per_page"
                         class="form-control @error('news_per_page') is-invalid @enderror" placeholder="10" min="1"
-                        max="100" value="{{ old('news_per_page', 10) }}">
+                        max="100" value="{{ old('news_per_page', $category->news_per_page) }}">
                 </div>
 
                 {{-- INCLUDE SUBCATEGORIES --}}
@@ -252,7 +291,8 @@
                     <div class="checkbox-wrapper-5">
                         <div class="check">
                             <input type="checkbox" id="include_subcategories" name="include_subcategories"
-                                value="1" {{ old('include_subcategories', true) ? 'checked' : '' }}>
+                                value="1"
+                                {{ old('include_subcategories', $category->include_subcategories) ? 'checked' : '' }}>
                             <label for="include_subcategories"></label>
                         </div>
                         <span class="switch-label">
@@ -273,7 +313,7 @@
 
                     <input type="number" id="sort_order" name="sort_order"
                         class="form-control @error('sort_order') is-invalid @enderror" placeholder="0" min="0"
-                        value="{{ old('sort_order', 0) }}">
+                        value="{{ old('sort_order', $category->sort_order) }}">
 
                     <small class="form-text">
                         Чем меньше число, тем выше категория в списке
@@ -293,7 +333,7 @@
                     <div class="checkbox-wrapper-5">
                         <div class="check">
                             <input type="checkbox" id="is_active" name="is_active" value="1"
-                                {{ old('is_active', true) ? 'checked' : '' }}>
+                                {{ old('is_active', $category->is_active) ? 'checked' : '' }}>
                             <label for="is_active"></label>
                         </div>
                         <span class="switch-label">
@@ -304,7 +344,7 @@
 
                 {{-- ACTIONS --}}
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Создать категорию</button>
+                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
                     <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary">Отмена</a>
                 </div>
             </form>

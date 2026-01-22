@@ -47,7 +47,7 @@
                                     <span>Настройка системы</span>
                                 </a>
                             </li>
-                            <li class="nav-item {{ request()->is('admin/category*') ? 'active' : '' }}">
+                            <li class="nav-item {{ request()->is('admin/categories*') ? 'active' : '' }}">
                                 <a href="{{ route('admin.categories.index') }}" class="nav-link">
                                     <i class='bx bxs-circle'></i>
                                     <span>Категории</span>
@@ -90,6 +90,26 @@
             <main class="page-content">
                 @yield('content')
             </main>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div class="confirm-modal-overlay" id="confirmModal">
+        <div class="confirm-modal">
+            <div class="confirm-modal-header">
+                <i class='bx bx-error-circle'></i>
+                <h5>Подтверждение удаления</h5>
+            </div>
+            <div class="confirm-modal-body">
+                <p>Вы уверены, что хотите удалить <span class="item-name" id="confirmItemName"></span>?</p>
+                <p style="margin-top: 10px; color: #6c757d; font-size: 13px;">Это действие нельзя отменить.</p>
+            </div>
+            <div class="confirm-modal-footer">
+                <button type="button" class="btn-cancel" id="confirmCancel">Отмена</button>
+                <button type="button" class="btn-confirm-delete" id="confirmDelete">
+                    <i class='bx bx-trash'></i> Удалить
+                </button>
+            </div>
         </div>
     </div>
 
@@ -138,6 +158,52 @@
             const parent = element.closest('.nav-item');
             parent?.classList.toggle('open');
         }
+
+        // Confirm Modal
+        (function() {
+            const modal = document.getElementById('confirmModal');
+            const itemName = document.getElementById('confirmItemName');
+            const cancelBtn = document.getElementById('confirmCancel');
+            const deleteBtn = document.getElementById('confirmDelete');
+            let currentForm = null;
+
+            // Открытие модального окна
+            window.showConfirmModal = function(form, name) {
+                currentForm = form;
+                itemName.textContent = name;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+
+            // Закрытие модального окна
+            function closeModal() {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+                currentForm = null;
+            }
+
+            // Отмена
+            cancelBtn?.addEventListener('click', closeModal);
+
+            // Клик на overlay
+            modal?.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            // Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+
+            // Подтверждение удаления
+            deleteBtn?.addEventListener('click', () => {
+                if (currentForm) {
+                    currentForm.submit();
+                }
+            });
+        })();
     </script>
 
     @stack('scripts')

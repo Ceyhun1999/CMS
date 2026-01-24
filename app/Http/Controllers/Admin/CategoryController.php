@@ -69,11 +69,8 @@ class CategoryController extends Controller
 
         if ($request->hasFile('icons')) {
             foreach ($request->file('icons') as $icon) {
-                $path = $icon->store('icons', 'public');
-                $paths[] = $path;
-
                 $filename = time() . '_' . uniqid() . '.' . $icon->getClientOriginalExtension();
-                $path = $icon->storeAs('categories/icons', $filename, 'public');
+                $paths[] = $icon->storeAs('categories/icons', $filename, 'public');
             }
         }
 

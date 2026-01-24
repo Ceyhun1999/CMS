@@ -10,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/admin/css/style.css') }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -51,6 +52,12 @@
                                 <a href="{{ route('admin.categories.index') }}" class="nav-link">
                                     <i class='bx bxs-circle'></i>
                                     <span>Категории</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->is('admin/posts*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.posts.index') }}" class="nav-link">
+                                    <i class='bx bxs-circle'></i>
+                                    <span>Новости</span>
                                 </a>
                             </li>
                         </ul>
@@ -146,10 +153,13 @@
             const toggleBtn = document.querySelector('.sidebar-toggle');
             const mainContent = document.querySelector('.main-content');
 
-            toggleBtn?.addEventListener('click', () => {
-                sidebar?.classList.toggle('collapsed');
-                mainContent?.classList.toggle('expanded');
-            });
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    sidebar?.classList.toggle('collapsed');
+                    mainContent?.classList.toggle('expanded');
+                });
+            }
         });
 
         // Submenu toggle

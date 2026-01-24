@@ -2,10 +2,10 @@
 @section('title', 'Категории')
 
 @section('content')
-    <div class="categories-container">
-        <div class="categories-header">
+    <div class="content-container">
+        <div class="content-header">
             <h4>Список категорий</h4>
-            <a href="{{ route('admin.categories.create') }}" class="btn btn-add-category">
+            <a href="{{ route('admin.categories.create') }}" class="btn btn-add-content">
                 <i class='bx bx-plus'></i> Добавить новую категорию
             </a>
         </div>
@@ -17,7 +17,7 @@
             ])
         </div>
 
-        <div class="categories-footer">
+        <div class="content-footer">
             <button type="button" class="btn btn-expand-all">Развернуть все</button>
             <button type="button" class="btn btn-collapse-all">Свернуть все</button>
             <a href="{{ route('admin.categories.create') }}" class="btn btn-add-category-green">

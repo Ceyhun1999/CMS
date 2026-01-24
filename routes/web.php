@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\SettingsController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/categories/update/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
     Route::delete('/categories/delete/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
 
+    Route::get('/posts', [PostController::class, 'index'])->name('admin.posts.index');
+    Route::get('/posts/create', [PostController::class, 'create'])->name('admin.posts.create');
+    Route::post('/posts/store', [PostController::class, 'store'])->name('admin.posts.store');
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
-    

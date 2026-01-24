@@ -14,13 +14,13 @@
         </ol>
     </nav>
 
-    <div class="settings-container">
-        <div class="settings-header">
+    <div class="create-container">
+        <div class="create-header">
             <h4>Добавить категорию</h4>
             <p>Создание новой категории для публикаций</p>
         </div>
 
-        <div class="settings-card">
+        <div class="create-card">
             <form id="categoryForm" action="{{ route('admin.categories.store') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf

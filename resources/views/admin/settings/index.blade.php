@@ -1,13 +1,13 @@
 @extends('admin.layouts.app')
 @section('title', 'Настройка системы')
 @section('content')
-    <div class="settings-container">
-        <div class="settings-header">
+    <div class="create-container">
+        <div class="create-header">
             <h4>Настройка системы</h4>
             <p>Основные параметры конфигурации сайта</p>
         </div>
 
-        <div class="settings-card">
+        <div class="create-card">
             <form action="{{ route('admin.settings.update') }}" method="POST">
                 @csrf
                 @method('PUT')

@@ -14,13 +14,13 @@
         </ol>
     </nav>
 
-    <div class="settings-container">
-        <div class="settings-header">
+    <div class="create-container">
+        <div class="create-header">
             <h4>Редактировать категорию</h4>
             <p>Изменение категории "{{ $category->title }}"</p>
         </div>
 
-        <div class="settings-card">
+        <div class="create-card">
             <form id="categoryForm" action="{{ route('admin.categories.update', $category->id) }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
@@ -211,7 +211,6 @@
 
                 <hr class="form-divider">
 
-                {{-- NEWS SETTINGS --}}
                 <div class="form-group">
                     <label for="news_sort_field">Сортировка новостей по:</label>
 

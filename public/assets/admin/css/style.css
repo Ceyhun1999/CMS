@@ -1032,6 +1032,7 @@ body.body-no-scroll {
 
 .btn-primary:active,
 .btn-primary:focus {
+    background: var(--primary-color);
     outline: none;
 }
 
@@ -1042,6 +1043,10 @@ body.body-no-scroll {
 
 .btn-secondary:hover {
     background: #6f7d8f;
+}
+
+.btn-secondary:active {
+    background: #8592a3;
 }
 
 /* =====================
@@ -1277,6 +1282,10 @@ body.body-no-scroll {
     background: #138496;
 }
 
+.btn-expand-all:active {
+    background: #17a2b8;
+}
+
 .btn-collapse-all {
     background: #6c757d;
     color: #fff;
@@ -1285,6 +1294,10 @@ body.body-no-scroll {
 .btn-collapse-all:hover {
     background: #5a6268;
     color: white !important;
+}
+
+.btn-collapse-all:active {
+    background: #6c757d;
 }
 
 .btn-add-category-green {
@@ -1306,6 +1319,15 @@ body.body-no-scroll {
 .btn-add-category-green:hover {
     background: var(--primary-hover);
     color: #fff;
+}
+
+.btn-add-category-green:active {
+    background: var(--primary-color);
+}
+
+.btn-add-icon:active {
+    background: #fff;
+    color: #6c757d;
 }
 
 /* Responsive */
@@ -1492,6 +1514,132 @@ body.body-no-scroll {
     gap: 12px;
     justify-content: flex-end;
     margin-top: 20px;
+}
+
+/* Dynamic Field */
+.dynamic-field {
+    position: relative;
+    padding: 15px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    background: #fafbfc;
+}
+
+.dynamic-field-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.dynamic-field-header label {
+    margin-bottom: 0;
+}
+
+.btn-remove-field {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid #dc3545;
+    border-radius: 6px;
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.btn-remove-field:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+.icons-container-dynamic {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* Select Options Builder */
+.select-options-builder {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.options-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.option-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    background: #e9ecef;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.option-item .option-text {
+    color: #495057;
+}
+
+.btn-remove-option {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    transition: all 0.15s;
+}
+
+.btn-remove-option:hover {
+    color: #a71d2a;
+}
+
+.add-option-row {
+    display: flex;
+    gap: 10px;
+}
+
+.add-option-row .option-input {
+    flex: 1;
+}
+
+.btn-add-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 16px;
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+
+.btn-add-option:hover {
+    background: var(--primary-hover);
+}
+
+.btn-add-option:active {
+    background: var(--primary-color);
 }
 
 /* Posts Table */

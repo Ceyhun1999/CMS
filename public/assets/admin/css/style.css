@@ -1254,11 +1254,24 @@ body.body-no-scroll {
 /* Footer */
 .content-footer {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 10px;
     padding: 15px 20px;
     background: #f8f9fa;
     border: 1px solid #e0e0e0;
     border-top: none;
+}
+
+.extra-fields-help {
+    color: #17a2b8;
+    text-decoration: none;
+    font-size: 13px;
+    margin-left: auto;
+}
+
+.extra-fields-help:hover {
+    text-decoration: underline;
 }
 
 .btn-expand-all,

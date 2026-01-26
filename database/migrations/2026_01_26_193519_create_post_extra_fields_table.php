@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('post_extra_fields', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 255);
-            $table->string('slug', 255)->unique();
-            $table->longText('short_description');
-            $table->longText('full_description');
-            $table->string('status', 50)->default('draft');
-
+            $table->string('name', 100)->unique();
+            $table->string('label', 255);
+            $table->string('type',30);
+            $table->json('options')->nullable();
+            $table->boolean('is_required')->default(false);
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('post_extra_fields');
     }
 };

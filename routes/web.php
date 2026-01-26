@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ExtraFieldController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/posts', [PostController::class, 'index'])->name('admin.posts.index');
     Route::get('/posts/create', [PostController::class, 'create'])->name('admin.posts.create');
     Route::post('/posts/store', [PostController::class, 'store'])->name('admin.posts.store');
+
+    Route::get('/extra-fields', [ExtraFieldController::class, 'index'])->name('admin.extra-fields.index');
+    Route::get('/extra-fields/create', [ExtraFieldController::class, 'create'])->name('admin.extra-fields.create');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

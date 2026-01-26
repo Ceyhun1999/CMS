@@ -60,6 +60,12 @@
                                     <span>Новости</span>
                                 </a>
                             </li>
+                            <li class="nav-item {{ request()->is('admin/extra-fields*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.extra-fields.index') }}" class="nav-link">
+                                    <i class='bx bxs-circle'></i>
+                                    <span>Дополнительные поля новостей</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
